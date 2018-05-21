@@ -1,25 +1,115 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using BowlingGame;
+using System.Collections;
 
-namespace BowlingBall.Tests
+namespace BowlingTest
 {
-    [TestClass]
-    public class GameFixture
+        
+    [TestFixture]
+    public class BowlingTest 
     {
-        [TestMethod]
-        public void Gutter_game_score_should_be_zero_test()
+        BowlingGame.BowlingGame game;
+
+        public BowlingTest()
         {
-            var game = new Game();
-            Roll(game, 0, 20);
-            Assert.AreEqual(0, game.GetScore());
         }
 
-        private void Roll(Game game, int pins, int times)
+        [SetUp]
+        public void SetUp()
         {
-            for (int i = 0; i < times; i++)
-            {
-                game.Roll(pins);
-            }
+            game = new BowlingGame.BowlingGame();
         }
+
+       
+        [Test]
+        public void GutterBalls()
+        {
+            ArrayList lstFrames=new ArrayList();
+            for (int i = 0; i < 20;i++)
+            {
+                game.AddRoll(0, lstFrames);
+            }
+            Assert.AreEqual(0, game.GetScore(lstFrames));
+        }
+
+        [Test]
+        public void Threes()
+        {
+            ArrayList lstFrames = new ArrayList();
+            for (int i = 0; i < 20; i++)
+            {
+                game.AddRoll(3, lstFrames);
+            }
+            Assert.AreEqual(60, game.GetScore(lstFrames));            
+        }
+
+        [Test]
+        public void AllStrikeORPerfect()
+        {
+            ArrayList lstFrames = new ArrayList();
+            for (int i = 0; i < 22; i++)
+            {
+                game.AddRoll(10, lstFrames);
+            }
+            Assert.AreEqual(300, game.GetScore(lstFrames));
+        }
+
+        [Test]
+        public void Spare()
+        {
+            ArrayList lstFrames = new ArrayList();
+            
+                game.AddRoll(4, lstFrames);
+                game.AddRoll(3, lstFrames);
+                game.AddRoll(4, lstFrames);
+                game.AddRoll(6, lstFrames);
+                game.AddRoll(7, lstFrames);
+                game.AddRoll(2, lstFrames);
+                game.AddRoll(3, lstFrames);
+                game.AddRoll(5, lstFrames);
+                game.AddRoll(3, lstFrames);
+                game.AddRoll(2, lstFrames);
+            
+            Assert.AreEqual(46, game.GetScore(lstFrames));
+        }
+
+        [Test]
+        public void SpareWithStrike()
+        {
+            ArrayList lstFrames = new ArrayList();
+
+            game.AddRoll(4, lstFrames);
+            game.AddRoll(3, lstFrames);
+            game.AddRoll(4, lstFrames);
+            game.AddRoll(6, lstFrames);
+            game.AddRoll(7, lstFrames);
+            game.AddRoll(2, lstFrames);
+            game.AddRoll(3, lstFrames);
+            game.AddRoll(5, lstFrames);
+            game.AddRoll(3, lstFrames);
+            game.AddRoll(2, lstFrames);
+
+            game.AddRoll(10, lstFrames);
+            game.AddRoll(6, lstFrames);
+            game.AddRoll(3, lstFrames);
+            game.AddRoll(4, lstFrames);
+            game.AddRoll(5, lstFrames);
+            game.AddRoll(3, lstFrames);
+            game.AddRoll(2, lstFrames);
+            game.AddRoll(3, lstFrames);
+            game.AddRoll(7, lstFrames);
+            game.AddRoll(10, lstFrames);
+
+            Assert.AreEqual(108, game.GetScore(lstFrames));
+        }    
+
+
     }
+
 }
+
